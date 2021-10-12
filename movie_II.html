@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #style{
+            margin: auto;
+            height: 600px;
+            width: 700px;
+            border: 1px solid black;
+            border-radius: 5%;
+        }
+        #details{
+            margin: auto;
+            height: 78%;
+            width: 95%;
+            background-color: darkgray;
+            border-radius: 5%;
+            display: grid;
+            grid-template-columns: 45% 45%;
+            grid-template-rows: 90%;
+            gap: 5%;
+        }
+        h1{
+            text-align: center;
+        }
+        input{
+            margin-left: 30%;
+        }
+        img{
+            margin: 3.5%;
+            border-radius: 2%;
+        }
+    </style>
+</head>
+<body id = "body">
+    <div id = "style">
+        <h1>Movie Fetch</h1>
+        <input type="text" name="" id="movie" placeholder="Enter Movie Name"/>
+        <button onclick="getMovie()">Get Movie Details</button>
+        <div>&nbsp;</div>
+        <div id = "details">
+
+        </div>
+    </div>
+   
+</body>
+</html>
+
+<script>
+
+    var parent = document.getElementById("details");
+     var parent2 = document.getElementById("body");
+    async function getMovie(){
+        
+        
+        var movie_name = document.getElementById('movie').value;
+        let res=  await fetch (`http://www.omdbapi.com/?apikey=f1559b4b&s=${movie_name}`)
+        
+        var data =await res.json();
+        console.log("data:", data)
+        if(data.Error == "Too many results."){
+            parent.innerHTML = null;
+            parent2.innerHTML = null;
+            let img = document.createElement('img');
+            img.src = "        https://blog.pcloud.com/wp-content/uploads/2017/06/giphy.gif";
+            body.append(img);
+        } else if(data.Error == "Movie not found!"){
+            parent.innerHTML = null;
+            parent2.innerHTML = null;
+            //let parent2 = document.getElementById("body");
+            let img = document.createElement('img');
+            img.src = "https://freefrontend.com/assets/img/html-funny-404-pages/HTML-Beer-404-Page.gif";
+            body.append(img);
+        } else {
+            parent.innerHTML = null;
+        let div1 = document.createElement('div');
+        let div2 = document.createElement('div');
+
+        let img = document.createElement('img');
+        img.src = data.Search[0].Poster
+        div1.append(img);
+
+        let name = document.createElement('p');
+        name.innerText = data.Search[0].Title;
+        let year = document.createElement('p');
+        year.innerText = data.Search[0].Year;
+        let Film_genre = document.createElement('p');
+        Film_genre.innerText = data.Search[0].Type;
+        let imdbID = document.createElement('p');
+        imdbID.innerText = data.Search[0].imdbID;
+
+        div2.append(name, year, Film_genre, imdbID)
+
+        parent.append(div1, div2);
+        }
+
+    }
+    
+    
+    
+
+
+</script>
